@@ -1,27 +1,81 @@
-import dipperPinesImage from "./assets/dipper_pines.png";
-import mabelPinesImage from "./assets/mabel_pines.png";
-import stanPinesImage from "./assets/stan_pines.png";
-import fordPinesImage from "./assets/ford_pines.png";
-import candyImage from "./assets/candy.png";
-import gideonGleefulImage from "./assets/gideon_gleeful.png";
-import grendaImage from "./assets/grenda.png";
-import robbieValentinoImage from "./assets/robbie_valentino.png";
-import wendyCorduroyImage from "./assets/wendy_corduroy.png";
+import { useEffect, useState } from "react";
+import candyPhoto from "./assets/candy.png";
+import dipperPinesPhoto from "./assets/dipper_pines.png";
+import fordPinesPhoto from "./assets/ford_pines.png";
+import gideonGleefulPhoto from "./assets/gideon_gleeful.png";
+import grendaPhoto from "./assets/grenda.png";
+import mabelPinesPhoto from "./assets/mabel_pines.png";
+import robbieValentinoPhoto from "./assets/robbie_valentino.png";
+import soosRamirezPhoto from "./assets/soos_ramirez.png";
+import stanPinesPhoto from "./assets/stan_pines.png";
+import wendyCorduroyPhoto from "./assets/wendy_corduroy.png";
+import ImageCard from "./ImageCard";
 
 function App() {
+  const firstRowImageArray = [
+    candyPhoto,
+    dipperPinesPhoto,
+    fordPinesPhoto,
+    gideonGleefulPhoto,
+    grendaPhoto,
+    mabelPinesPhoto,
+    robbieValentinoPhoto,
+    soosRamirezPhoto,
+    stanPinesPhoto,
+    wendyCorduroyPhoto,
+  ];
+  // const secondRowImageArray = [
+  //   mabelPinesPhoto,
+  //   robbieValentinoPhoto,
+  //   soosRamirezPhoto,
+  //   stanPinesPhoto,
+  //   wendyCorduroyPhoto,
+  // ];
+
+  function shuffleElements(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+
+    return array;
+  }
+
+  const shuffleFirstImageArray = shuffleElements(firstRowImageArray);
+  // const shuffleSecondImageArray = shuffleElements(secondRowImageArray);
+
+  const [clicked, setClicked] = useState(shuffleFirstImageArray);
+
+  function handleFirstRowClick() {
+    setClicked(shuffleFirstImageArray);
+  }
+
+  // function handleSecondRowClick() {
+  //   shuffleElements(secondRowImageArray);
+  // }
+
+  const firstRow = Array.from(clicked, (asd, index) => (
+    <ImageCard
+      index={index + 1}
+      key={index}
+      src={asd}
+      onClick={handleFirstRowClick}
+    />
+  ));
+
+  // const secondRow = Array.from(shuffleSecondImageArray, (asd, index) => (
+  //   <ImageCard
+  //     index={index + 6}
+  //     key={index + 5}
+  //     src={asd}
+  //     onClick={handleSecondRowClick}
+  //   />
+  // ));
+
   return (
-    <div className="flex h-full items-center">
-      <div className="h-96 w-96">
-        <img className="border-2 border-black" src={dipperPinesImage} />
-        <img className="border-2 border-black" src={mabelPinesImage} />
-        <img className="border-2 border-black" src={stanPinesImage} />
-        <img className="border-2 border-black" src={fordPinesImage} />
-        <img className="border-2 border-black" src={candyImage} />
-        <img className="border-2 border-black" src={gideonGleefulImage} />
-        <img className="border-2 border-black" src={grendaImage} />
-        <img className="border-2 border-black" src={robbieValentinoImage} />
-        <img className="border-2 border-black" src={wendyCorduroyImage} />
-      </div>
+    <div className="flex h-screen flex-col justify-around">
+      <div className="flex select-none justify-around">{firstRow}</div>
+      {/* <div className="flex select-none justify-around">{secondRow}</div> */}
     </div>
   );
 }
