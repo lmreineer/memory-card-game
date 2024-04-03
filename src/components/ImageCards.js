@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
+import cardBackImage from "../assets/card-back.png";
 
 function ImageCards() {
-  // Initially shuffle the images
-  const [imageList, setImageList] = useState(shuffleImages);
-
-  const [cardFlipStyles, setCardFlipStyles] = useState(
+  const [imageList, setImageList] = useState(shuffleImages); // Initially shuffle the images
+  const [cardFlipEffect, setCardFlipEffect] = useState(
     `[transform-style:preserve-3d] [transform:rotateY(180deg)]`,
   );
-  const [cardIsShown, setCardIsShown] = useState(false);
+
+  const CARDS_LENGTH = 3;
 
   // Function for shuffling the images
   function shuffleImages() {
-    // Import the images from the assets folder
+    // Import the images from the pokemons folder in assets
     const images = require.context("../assets/pokemons", true);
     const shuffledList = images.keys().map((image) => images(image));
 
@@ -36,39 +36,27 @@ function ImageCards() {
 
   useEffect(() => {
     setTimeout(() => {
-      setCardFlipStyles(`
-        [transform-style:preserve-3d]  duration-500`);
+      setCardFlipEffect(`
+        [transform-style:preserve-3d]`);
     }, 100);
+  }, []); // Put empty brackets to run setTimeouts only onces
 
-    setTimeout(() => {
-      setCardFlipStyles(`
-        duration-0 border-gray-500`);
-    }, 300);
-
-    setTimeout(() => {
-      setCardIsShown(true);
-    }, 300);
-    // Put empty brackets to run setTimeouts only once
-  }, []);
-
-  const sss = require.context("../assets", true);
-  const list = sss.keys().map((image) => sss(image));
-
-  return imageList.slice(0, 3).map((src, index) => (
+  return imageList.slice(0, CARDS_LENGTH).map((src, index) => (
     <div
-      className={`cursor-pointer rounded-3xl border-2 bg-gray-100 p-5 text-center hover:border-black ${cardFlipStyles}`}
+      className={`cursor-pointer rounded-3xl border-2 bg-gray-100 p-5 text-center duration-500 hover:border-black ${cardFlipEffect}`}
+      key={src}
       onClick={handleCardClick}
     >
       <img
-        className="pointer-events-none h-72 max-w-72 border-b-2 border-gray-500"
-        key={index}
+        className="pointer-events-none h-72 max-w-64 border-b-2  border-gray-500"
         src={src}
-        alt={`Character ${index}`}
+        alt={`Pokémon ${index + 1}`}
       />
-      <p className="pt-5">{cardIsShown ? showPokemonName(src) : ""}&nbsp;</p>
+      <p className="pt-5">{showPokemonName(src)}</p>
       <img
-        src={list[0]}
-        className="absolute inset-0 h-full w-full rounded-3xl p-5 [backface-visibility:hidden] [transform:rotateY(180deg)]"
+        className="absolute	inset-0 h-full w-full rounded-3xl [backface-visibility:hidden] [transform:rotateY(180deg)]"
+        src={cardBackImage}
+        alt="Card back"
       />
     </div>
   ));
